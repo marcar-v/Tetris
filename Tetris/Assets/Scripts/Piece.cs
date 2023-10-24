@@ -13,8 +13,10 @@ public class Piece : MonoBehaviour
     [SerializeField] float stepDelay = 1f;
     [SerializeField] float lockDelay = 0.5f;
 
-    private float stepTime;
+    public float stepTime;
     private float lockTime;
+
+
     public void Init(Board board, Vector3Int position, TetrominoData data)
     {
         this.board = board;
@@ -60,21 +62,24 @@ public class Piece : MonoBehaviour
             Move(Vector2Int.right);
         }
 
-        if(Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S))
         {
             Move(Vector2Int.down);
         }
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             HardDrop();
         }
 
-        if(Time.time >= stepTime)
+        if (Time.time >= stepTime)
         {
             Step(); ;
         }
+
         board.Set(this);
+
+        UpdateFallingSpeed();
     }
 
     private void Step()
@@ -87,6 +92,11 @@ public class Piece : MonoBehaviour
         {
             Lock();
         }
+
+    }
+    private void UpdateFallingSpeed()
+    {
+        stepDelay = 1f - ((float)board.level * 0.1f);
     }
 
     private void Lock()
@@ -96,7 +106,7 @@ public class Piece : MonoBehaviour
         board.SpawnPiece();
     }
 
-    void HardDrop()
+    private void HardDrop()
     {
         while(Move(Vector2Int.down))
         {
@@ -105,7 +115,7 @@ public class Piece : MonoBehaviour
         Lock();
     }
 
-    private bool Move(Vector2Int translation)
+    public bool Move(Vector2Int translation)
     {
         Vector3Int newPosition = position;
         newPosition.x += translation.x;
@@ -122,7 +132,7 @@ public class Piece : MonoBehaviour
         return valid;
     }
 
-    void Rotate(int direction)
+    private void Rotate(int direction)
     {
         int originalRotation = rotationIndex;
         rotationIndex += Wrap(rotationIndex + direction, 0, 4);

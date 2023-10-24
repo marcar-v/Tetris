@@ -13,6 +13,12 @@ public class Board : MonoBehaviour
 
     public Vector2Int boardSize = new Vector2Int (10, 20);
 
+    [SerializeField] int linesCleaned;
+    public int level = 0;
+
+    GameObject scoreText;
+
+
     public RectInt Bounds
     {
         get
@@ -38,8 +44,13 @@ public class Board : MonoBehaviour
     {
         SpawnPiece();
 
+        scoreText = GameObject.FindGameObjectWithTag("ScoreText");
     }
 
+    private void Update()
+    {
+        UpdateLevel();
+    }
     public void SpawnPiece()
     {
         int random = Random.Range(0, tetrominoes.Length);
@@ -111,6 +122,7 @@ public class Board : MonoBehaviour
             if (IsLineFull(row))
             {
                 LineClear(row);
+                
             }
             else
             {
@@ -141,6 +153,8 @@ public class Board : MonoBehaviour
             row++;
         }
 
+        linesCleaned++;
+        scoreText.GetComponent<GameScore>().Score += 500;
     }
 
     private bool IsLineFull(int row)
@@ -159,5 +173,12 @@ public class Board : MonoBehaviour
 
         return true;
     }
+
+    void UpdateLevel()
+    {
+        level = linesCleaned / 10;
+    }
+
+
 }
 
