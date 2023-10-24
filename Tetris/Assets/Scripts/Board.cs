@@ -8,6 +8,9 @@ public class Board : MonoBehaviour
     public Tilemap tilemap { get; private set; }
     [SerializeField] TetrominoData[] tetrominoes;
     public Piece activePiece { get; private set; }
+    public Piece nextPiece { get; private set; }
+
+    Vector2 previewPiecePosition = new Vector2(-7.5f, 9.5f);
 
     [SerializeField] Vector3Int spawnPosition;
 
