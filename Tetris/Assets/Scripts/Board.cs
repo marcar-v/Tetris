@@ -27,6 +27,7 @@ public class Board : MonoBehaviour
     {
         tilemap = GetComponentInChildren<Tilemap>();
         activePiece = GetComponentInChildren<Piece>();
+
         for (int i = 0; i < tetrominoes.Length; i++)
         {
             tetrominoes[i].Init();
@@ -45,7 +46,7 @@ public class Board : MonoBehaviour
         TetrominoData data = tetrominoes[random];
 
         activePiece.Init(this, spawnPosition, data);
-        Set(activePiece);
+        Set(this.activePiece);
     }
 
     public void Set(Piece piece)
@@ -53,7 +54,7 @@ public class Board : MonoBehaviour
         for (int i = 0; i < piece.cells.Length; i++)
         {
             Vector3Int tilePosition = piece.cells[i] + piece.position;
-            tilemap.SetTile(tilePosition, piece.data.tile);
+            this.tilemap.SetTile(tilePosition, piece.data.tile);
         }
     }
     public void Clear(Piece piece)

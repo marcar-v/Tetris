@@ -15,14 +15,14 @@ public class Piece : MonoBehaviour
         this.position = position;
         this.data = data;
 
-        if(cells == null )
+        if(this.cells == null )
         {
             cells = new Vector3Int[data.cells.Length];
         }
 
         for ( int i = 0; i < data.cells.Length; i++ )
         {
-            cells[i] = (Vector3Int)data.cells[i];
+            this.cells[i] = (Vector3Int)data.cells[i];
         }
     }
     private void Update()
@@ -33,7 +33,7 @@ public class Piece : MonoBehaviour
         {
             Move(Vector2Int.left);
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             Move(Vector2Int.right);
         }
@@ -42,14 +42,15 @@ public class Piece : MonoBehaviour
         {
             Move(Vector2Int.down);
         }
+
         board.Set(this);
     }
 
     private bool Move(Vector2Int translation)
     {
         Vector3Int newPosition = position;
-        newPosition.x = translation.x;
-        newPosition.y = translation.y;
+        newPosition.x += translation.x;
+        newPosition.y += translation.y;
 
         bool valid = board.IsValidPosition(this, newPosition);
 
