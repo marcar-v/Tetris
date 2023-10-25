@@ -41,40 +41,42 @@ public class Piece : MonoBehaviour
         board.Clear(this);
 
         lockTime += Time.deltaTime;
+        if(!PauseMenu.isPaused ) 
+        {
+            //Rotación
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                Rotate(-1);
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+                Rotate(1);
+            }
 
-        //Rotación
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Rotate(-1);
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            Rotate(1);
-        }
+            //Movimiento ortogonal
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                Move(Vector2Int.left);
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                Move(Vector2Int.right);
+            }
 
-        //Movimiento ortogonal
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Move(Vector2Int.left);
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            Move(Vector2Int.right);
-        }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                Move(Vector2Int.down);
+            }
 
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Move(Vector2Int.down);
-        }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                HardDrop();
+            }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            HardDrop();
-        }
-
-        if (Time.time >= stepTime)
-        {
-            Step(); ;
+            if (Time.time >= stepTime)
+            {
+                Step(); ;
+            }
         }
 
         board.Set(this);
