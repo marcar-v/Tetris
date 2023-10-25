@@ -21,10 +21,6 @@ public class Board : MonoBehaviour
 
     GameObject scoreText;
 
-    [SerializeField] GameObject gameOverPanel;
-
-    [SerializeField] AudioSource audioSource;
-
 
     public RectInt Bounds
     {
@@ -67,21 +63,19 @@ public class Board : MonoBehaviour
 
         if(IsValidPosition(activePiece, spawnPosition))
         {
-            
             Set(activePiece);
         }
         else
         {
             GameOver();
         }
-        audioSource.Play();
+
         Set(this.activePiece);
     }
 
-    public void GameOver()
+    private void GameOver()
     {
-        gameOverPanel.SetActive(true);
-        audioSource.enabled = false;
+        tilemap.ClearAllTiles();
     }
 
     public void Set(Piece piece)
@@ -89,9 +83,8 @@ public class Board : MonoBehaviour
         for (int i = 0; i < piece.cells.Length; i++)
         {
             Vector3Int tilePosition = piece.cells[i] + piece.position;
-            tilemap.SetTile(tilePosition, piece.data.tile);
+            this.tilemap.SetTile(tilePosition, piece.data.tile);
         }
-
     }
     public void Clear(Piece piece)
     {
