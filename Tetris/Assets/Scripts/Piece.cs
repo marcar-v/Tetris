@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Build.Reporting;
 using UnityEngine;
 
 public class Piece : MonoBehaviour
@@ -15,6 +14,12 @@ public class Piece : MonoBehaviour
 
     public float stepTime;
     private float lockTime;
+
+    int touchSensitivityHorizontal = 8;
+    int touchSensitivityVertical = 4;
+    Vector2 previousUnitPosition = Vector2.zero;
+    Vector2 direction = Vector2.zero;
+    bool moved;
 
 
     public void Init(Board board, Vector3Int position, TetrominoData data)
@@ -76,6 +81,55 @@ public class Piece : MonoBehaviour
             if (Time.time >= stepTime)
             {
                 Step(); ;
+            }
+
+            if(Input.touchCount > 0)
+            {
+                Touch currentTouch = Input.GetTouch(0);
+                if(currentTouch.phase == TouchPhase.Began)
+                {
+                    previousUnitPosition = new Vector2(currentTouch.position.x, currentTouch.position.y);
+                }
+                else if(currentTouch.phase == TouchPhase.Moved)
+                {
+                    Vector2 touchDeltaPosition = currentTouch.deltaPosition;
+                    direction = touchDeltaPosition.normalized;
+
+                    if (Mathf.Abs(currentTouch.position.x - previousUnitPosition.x) >= touchSensitivityHorizontal 
+                        && direction.x < 0 && currentTouch.deltaPosition.y > -10 && currentTouch.deltaPosition.y < 10)
+                    {
+                        //Move Left
+                        Move(Vector2Int.left);
+                        previousUnitPosition = currentTouch.position;
+                        moved = true;
+                    }
+
+                    else if(Mathf.Abs(currentTouch.position.x - previousUnitPosition.x) >= touchSensitivityVertical
+                        && direction.y > 0 && currentTouch.deltaPosition.y > -10 && currentTouch.deltaPosition.y < 10)
+                    {
+                        //Move Right
+                        Move(Vector2Int.right);
+                        previousUnitPosition = currentTouch.position;
+                        moved = true;
+                    }
+
+                    else if (Mathf.Abs(currentTouch.position.y - previousUnitPosition.y) >= touchSensitivityHorizontal
+                        && direction.x < 0 && currentTouch.deltaPosition.x > -10 && currentTouch.deltaPosition.x < 10)
+                    {
+                        //Move Down
+                        Move(Vector2Int.down);
+                        previousUnitPosition = currentTouch.position;
+                        moved = true;
+                    }
+                }
+                else if(currentTouch.phase == TouchPhase.Ended)
+                {
+                    if(!moved && currentTouch.position.x > Screen.width / 4)
+                    {
+                        Rotate(1);
+                    }
+                    moved = false;
+                }
             }
         }
 
