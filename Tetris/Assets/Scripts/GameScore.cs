@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameScore : MonoBehaviour
 {
-    TextMeshProUGUI scoreText;
+    //Tetris Script 
+    [SerializeField] TextMeshProUGUI scoreText;
     int score;
 
     [SerializeField] TextMeshProUGUI highscore;
@@ -27,7 +29,7 @@ public class GameScore : MonoBehaviour
 
     private void Start()
     {
-        scoreText = GetComponent<TextMeshProUGUI>();
+        //scoreText = GetComponent<TextMeshProUGUI>();
 
         highscore.text = PlayerPrefs.GetInt("Highscore", 0).ToString();
     }
