@@ -21,7 +21,12 @@ public class Piece : MonoBehaviour
     Vector2 direction = Vector2.zero;
     bool moved;
 
+    AudioManager audioManager;
 
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
     public void Init(Board board, Vector3Int position, TetrominoData data)
     {
         this.board = board;
@@ -46,7 +51,7 @@ public class Piece : MonoBehaviour
         board.Clear(this);
 
         lockTime += Time.deltaTime;
-        if(!PauseMenu.isPaused ) 
+        if(!PauseMenu.isPaused) 
         {
             //Rotación
             if (Input.GetKeyDown(KeyCode.Q))
@@ -157,6 +162,7 @@ public class Piece : MonoBehaviour
 
     private void Lock()
     {
+        audioManager.PlaySFX(audioManager.pieceLockSound);
         board.Set(this);
         board.ClearLine();
         board.SpawnPiece();

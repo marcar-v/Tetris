@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class GameScore : MonoBehaviour
 {
-    //Tetris Script 
     [SerializeField] TextMeshProUGUI scoreText;
     int score;
 
@@ -29,8 +28,6 @@ public class GameScore : MonoBehaviour
 
     private void Start()
     {
-        //scoreText = GetComponent<TextMeshProUGUI>();
-
         highscore.text = PlayerPrefs.GetInt("Highscore", 0).ToString();
     }
 

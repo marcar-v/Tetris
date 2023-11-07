@@ -21,6 +21,9 @@ public class Board : MonoBehaviour
 
     GameObject scoreText;
 
+    AudioManager audioManager;
+
+    [SerializeField] GameObject gameOverPanel;
 
     public RectInt Bounds
     {
@@ -36,6 +39,8 @@ public class Board : MonoBehaviour
     {
         tilemap = GetComponentInChildren<Tilemap>();
         activePiece = GetComponentInChildren<Piece>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+        scoreText = GameObject.FindGameObjectWithTag("ScoreText");
 
         for (int i = 0; i < tetrominoes.Length; i++)
         {
@@ -46,8 +51,6 @@ public class Board : MonoBehaviour
     private void Start()
     {
         SpawnPiece();
-
-        scoreText = GameObject.FindGameObjectWithTag("ScoreText");
     }
 
     private void Update()
@@ -75,7 +78,9 @@ public class Board : MonoBehaviour
 
     private void GameOver()
     {
-        tilemap.ClearAllTiles();
+        audioManager.PlaySFX(audioManager.gameOverSound);
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     public void Set(Piece piece)
@@ -156,8 +161,10 @@ public class Board : MonoBehaviour
             row++;
         }
 
+        audioManager.PlaySFX(audioManager.lineCompletedSound);
         linesCleaned++;
         scoreText.GetComponent<GameScore>().Score += 500;
+
     }
 
     private bool IsLineFull(int row)
